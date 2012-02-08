@@ -351,25 +351,19 @@ static swypWorkspaceViewController	* _singleton_sharedSwypWorkspace = nil;
 	
 	[self.view setClipsToBounds:FALSE];
 
-    UIButton *curlButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    curlButton.adjustsImageWhenHighlighted = YES;
-    curlButton.frame = CGRectMake(0, 0, self.view.frame.size.width, 60);
-    curlButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"top_curl"]];
-	[curlButton setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
-    [curlButton.layer setOpaque:NO];
+    UIButton *gripperButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    gripperButton.adjustsImageWhenHighlighted = YES;
+    gripperButton.frame = CGRectMake(0, 0, self.view.frame.size.width, 32);
+    [gripperButton setImage:[UIImage imageNamed:@"grippers"] forState:UIControlStateNormal];
+	[gripperButton setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
         
-    [curlButton addTarget:self action:@selector(leaveWorkspaceWantedBySender:) 
+    [gripperButton addTarget:self action:@selector(leaveWorkspaceWantedBySender:) 
          forControlEvents:UIControlEventTouchUpInside];
-	[_mainWorkspaceView addSubview:curlButton];
-
-	
-	_leaveWorkspaceTapRecog	= [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(leaveWorkspaceWantedBySender:)] ;
-	[_mainWorkspaceView.backgroundView addGestureRecognizer:_leaveWorkspaceTapRecog];
+	[_mainWorkspaceView addSubview:gripperButton];
              
     _swipeDownRecognizer	= [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(leaveWorkspaceWantedBySender:)] ;
     _swipeDownRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
-    [_mainWorkspaceView addGestureRecognizer:_swipeDownRecognizer];
-    
+    [gripperButton addGestureRecognizer:_swipeDownRecognizer];
 	
 	[[self connectionManager] startServices];
 	    
