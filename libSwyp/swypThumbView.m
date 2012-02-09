@@ -14,6 +14,7 @@
 @synthesize image = _image;
 @synthesize progress = _progress;
 @synthesize loading = _loading;
+@synthesize scale, rotation;
 
 static float framePadding = 8.0;
 
@@ -39,7 +40,11 @@ static float framePadding = 8.0;
         [self insertSubview:_progressView atIndex:2];
         
         self.userInteractionEnabled = YES;
+        self.multipleTouchEnabled = YES;
         self.clipsToBounds = NO;
+        
+        self.scale = 1.0;
+        self.rotation = 0;
     }
     return self;
 }

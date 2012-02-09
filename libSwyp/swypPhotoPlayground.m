@@ -9,6 +9,13 @@
 #import "swypPhotoPlayground.h"
 #import "swypTiledContentViewController.h"
 #import "swypOutGestureRecognizer.h"
+#import "swypThumbView.h"
+
+@interface UIView (debug)
+
+- (NSString *)recursiveDescription;
+
+@end
 
 @implementation swypPhotoPlayground
 
@@ -156,6 +163,27 @@
 	}
 }
 
+- (void)handlePinch:(UIPinchGestureRecognizer *)recognizer{
+    NSLog(@"pinch.");
+    if (recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) {
+        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            recognizer.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
+        } completion:^(BOOL finished){
+            NSLog(@"%i", finished);
+        }];
+    } else {
+        recognizer.view.transform = CGAffineTransformScale(recognizer.view.transform, recognizer.scale, recognizer.scale);
+        recognizer.scale = 1;
+    }
+}
+
+- (void)handleRotate:(UIRotationGestureRecognizer *)recognizer{
+    // inadequate. Need to save rotation state..
+    NSLog(@"rotate");
+    recognizer.view.transform = CGAffineTransformRotate(recognizer.view.transform, recognizer.rotation);
+    recognizer.rotation = 0;
+}
+
 -(void)	swypOutGestureChanged:(swypOutGestureRecognizer*)recognizer{
 	if (recognizer.state == UIGestureRecognizerStateRecognized){
 		UIView * gestureView	=	[[recognizer swypGestureInfo] swypBeginningContentView];
@@ -172,6 +200,11 @@
 	
 	if ([gestureRecognizer isKindOfClass:[swypGestureRecognizer class]])
 		return TRUE;
+    
+    if ([gestureRecognizer isKindOfClass:[UIRotationGestureRecognizer class]] && 
+        [otherGestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]]){
+        return TRUE;
+    }
 	
 	return FALSE;
 }
@@ -254,17 +287,29 @@
 -(UIView*) _setupTileWithID:(NSString*)tileID{
 	UIView * tileView	=	[_contentDisplayControllerDelegate viewForContentWithID:tileID ofMaxSize:_photoSize inController:self];
 	
-	BOOL needAddPanRecognizer = TRUE;
+	BOOL needToAddRecognizers = TRUE;
 	for (UIGestureRecognizer * recognizer in [tileView gestureRecognizers]){
 		if ([recognizer isKindOfClass:[UIPanGestureRecognizer class]]){
-			needAddPanRecognizer = FALSE;
+			needToAddRecognizers = FALSE;
 			break;
 		}
 	}
-	if (needAddPanRecognizer){
+	if (needToAddRecognizers){
 		UIPanGestureRecognizer * dragRecognizer		=	[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(contentPanOccurredWithRecognizer:)];
-		[tileView addGestureRecognizer:dragRecognizer];
-		SRELS(dragRecognizer);
+        [tileView addGestureRecognizer:dragRecognizer];
+        SRELS(dragRecognizer);
+        
+        /*
+        UIPinchGestureRecognizer *pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+        UIRotationGestureRecognizer *rotationRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotate:)];        
+        
+        NSLog(@"%@", [[tileView class] description]);
+        [tileView addGestureRecognizer:pinchRecognizer];
+        [tileView addGestureRecognizer:rotationRecognizer];
+         
+         SRELS(pinchRecognizer);
+         SRELS(rotationRecognizer);
+         */
 	}
 	
 	return tileView;

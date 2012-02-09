@@ -65,4 +65,14 @@
  */
 @property (nonatomic, assign) BOOL loading;
 
+/**
+ The view's current scale.
+ */
+@property (nonatomic, assign) float scale;
+
+/**
+ The view's current rotation in radians.
+ */
+@property (nonatomic, assign) float rotation;
+
 @end
