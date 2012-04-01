@@ -176,6 +176,8 @@
 	}else if (ref.swypType == swypInfoRefTypeSwypOut){
 		[self dropSwypOutSwypInfoRefFromAdvertisers:ref];
 	}
+    
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"swypConnected" object:nil]];
 	
 	[session addDataDelegate:self];
 	[session addConnectionSessionInfoDelegate:self];
@@ -187,7 +189,6 @@
 #pragma mark SWYP Responders
 #pragma mark IN
 -(void) swypInCompletedWithSwypInfoRef:	(swypInfoRef*)inInfo{
-
 	NSMutableArray * addedInterfacesForSwypIn	=	[NSMutableArray array];
 	if (self.activeConnectionMethods & swypConnectionMethodWifiCloud){
 		[_cloudPairManager startFindingSwypInServerCandidatesForRef:inInfo];
@@ -248,8 +249,7 @@
 		[_handshakeManager referenceSwypOutAsPending:outInfo];
 	}
 }
--(void)	swypOutCompletedWithSwypInfoRef:(swypInfoRef*)outInfo{
-
+-(void)	swypOutCompletedWithSwypInfoRef:(swypInfoRef*)outInfo {
 	NSMutableArray * addedInterfacesForSwypOut	=	[NSMutableArray array];
 	if (self.activeConnectionMethods & swypConnectionMethodWifiCloud){
 		[_cloudPairManager advertiseSwypOutAsCompleted:outInfo];

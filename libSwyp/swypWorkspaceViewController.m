@@ -256,12 +256,18 @@ static swypWorkspaceViewController	* _singleton_sharedSwypWorkspace = nil;
 #pragma mark UIGestureRecognizerDelegate
 -(void)	swypInGestureChanged:(swypInGestureRecognizer*)recognizer{
 	if (recognizer.state == UIGestureRecognizerStateRecognized){
+        [[NSNotificationCenter defaultCenter]
+            postNotification:[NSNotification notificationWithName:@"swypOut"
+                                                           object:@{@"gesture":[recognizer swypGestureInfo]}]];
 		[_connectionManager swypInCompletedWithSwypInfoRef:[recognizer swypGestureInfo]];
 	}
 }
 
 -(void)	swypOutGestureChanged:(swypOutGestureRecognizer*)recognizer{
 	if (recognizer.state == UIGestureRecognizerStateBegan){
+        [[NSNotificationCenter defaultCenter]
+         postNotification:[NSNotification notificationWithName:@"swypOut"
+                                                        object:@{@"gesture":[recognizer swypGestureInfo]}]];
 		[_connectionManager swypOutStartedWithSwypInfoRef:[recognizer swypGestureInfo]];
 	}else if (recognizer.state == UIGestureRecognizerStateCancelled){
 		[_connectionManager swypOutFailedWithSwypInfoRef:[recognizer swypGestureInfo]];
