@@ -105,19 +105,19 @@
 		[[recognizer view] setFrame:newTranslationFrame];
 		[recognizer setTranslation:CGPointZero inView:self.view];
         
-        if (centerY < 60) {
-            float fraction = powf(0.98, (60-centerY));
-            recognizer.view.transform = CGAffineTransformMakeScale(fraction, fraction);
-            recognizer.view.alpha = fraction;
-        } else {
-            recognizer.view.transform = CGAffineTransformMakeScale(1, 1);
-        }
+//        if (centerY < 60) {
+//            float fraction = powf(0.98, (60-centerY));
+//            recognizer.view.transform = CGAffineTransformMakeScale(fraction, fraction);
+//            recognizer.view.alpha = fraction;
+//        } else {
+//            recognizer.view.transform = CGAffineTransformMakeScale(1, 1);
+//        }
 				
 	} else if ([recognizer state] == UIGestureRecognizerStateEnded || [recognizer state] == UIGestureRecognizerStateFailed || [recognizer state] == UIGestureRecognizerStateCancelled){
         
         NSString * swypOutContentID	= [_contentViewTilesByID keyForObject:[recognizer view]];
         
-        if (centerY > 60) {
+//        if (centerY > 60) {
             CGRect keneticTranslationFrame	= CGRectApplyAffineTransform([[recognizer view] frame],CGAffineTransformMakeTranslation( round([recognizer velocityInView:recognizer.view].x * .125), round([recognizer velocityInView:recognizer.view].y * .125)));
                                     
             double tossDistance	=	euclideanDistance(keneticTranslationFrame.origin, [[recognizer view] frame].origin);
@@ -129,10 +129,10 @@
             
 			CGRect revisedKeneticTranslationFrame			= [self rectToKeepInPlaygroundWithIntendedRect:keneticTranslationFrame];
 			
-			//Toss mode should have different upper bound
-			if (revisedKeneticTranslationFrame.origin.y < 50) {
-				revisedKeneticTranslationFrame.origin.y = 50;
-			}
+//			//Toss mode should have different upper bound
+//			if (revisedKeneticTranslationFrame.origin.y < 50) {
+//				revisedKeneticTranslationFrame.origin.y = 50;
+//			}
 			
             [UIView animateWithDuration:.25 delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseOut animations:^{
                 [[recognizer view] setFrame:revisedKeneticTranslationFrame];
@@ -143,16 +143,16 @@
                     }
                 }
             }];
-        } else {
-            [UIView animateWithDuration:0.25 animations:^{
-                recognizer.view.alpha = 0;
-                recognizer.view.transform = CGAffineTransformMakeScale(0.01, 0.01);
-            }completion:^(BOOL completed){
-                if (completed) {
-					[_contentDisplayControllerDelegate contentWithIDWasDraggedOffWorkspace:swypOutContentID inController:self];
-                }
-            }];
-        }		
+//        } else {
+//            [UIView animateWithDuration:0.25 animations:^{
+//                recognizer.view.alpha = 0;
+//                recognizer.view.transform = CGAffineTransformMakeScale(0.01, 0.01);
+//            }completion:^(BOOL completed){
+//                if (completed) {
+//					[_contentDisplayControllerDelegate contentWithIDWasDraggedOffWorkspace:swypOutContentID inController:self];
+//                }
+//            }];
+//        }		
 	}
 }
 
@@ -174,6 +174,7 @@
 			} else if ([[recognizer swypGestureInfo] screenEdgeOfSwyp] == swypScreenEdgeTypeBottom){
 				disappearFrame.origin.y	=	self.view.height;
 			}else if ([[recognizer swypGestureInfo] screenEdgeOfSwyp] == swypScreenEdgeTypeTop){
+				disappearFrame.size.height = 157;
 				disappearFrame.origin.y	=	0 - originalFrame.size.height;
 			}
 			double distance		=	euclideanDistance(originalFrame.origin,disappearFrame.origin);

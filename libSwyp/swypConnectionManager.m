@@ -339,16 +339,16 @@
 
 	//
 	//set defaults 
-//	_supportedConnectionMethods	|= swypConnectionMethodWifiLoc;
+	_supportedConnectionMethods	|= swypConnectionMethodWifiLoc;
 //	_supportedConnectionMethods	|= swypConnectionMethodWifiCloud;
 //	_supportedConnectionMethods	|= swypConnectionMethodWWANCloud;
 	_supportedConnectionMethods	|= swypConnectionMethodBluetooth;
 	
-	_userPreferedConnectionClass	= swypConnectionClassBluetooth;
+	_userPreferedConnectionClass	= swypConnectionClassWifiAndCloud;
 	
 	//
 	//setup service managers
-//	_bonjourPairManager		= [[swypBonjourPairManager alloc] initWithInterfaceManagerDelegate:self];
+	_bonjourPairManager		= [[swypBonjourPairManager alloc] initWithInterfaceManagerDelegate:self];
 	_cloudPairManager		= [[swypCloudPairManager alloc] initWithInterfaceManagerDelegate:self];
 	_bluetoothPairManager	= [[swypBluetoothPairManager alloc] initWithInterfaceManagerDelegate:self];
     

@@ -56,7 +56,7 @@
 		[_swypNetworkInterfaceClassButton setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin];
 		[_swypNetworkInterfaceClassButton setShowsTouchWhenHighlighted:TRUE];
 		[_swypNetworkInterfaceClassButton addTarget:workspace action:@selector(networkInterfaceClassButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-		[_swypNetworkInterfaceClassButton setEnabled:FALSE];
+		[_swypNetworkInterfaceClassButton setEnabled:TRUE];
 		[_swypNetworkInterfaceClassButton setOrigin:CGPointMake(9, self.frame.size.height-32)];
 		[self addSubview:_swypNetworkInterfaceClassButton];
 		
